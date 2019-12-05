@@ -1,6 +1,6 @@
-FROM centos:latest
+FROM registry.access.redhat.com/ubi8/ubi
 
-RUN yum -y install curl && \
+RUN yum -y install --disableplugin=subscription-manager curl && \
     yum clean all 
 
 ADD root /
