@@ -12,7 +12,7 @@ podman run -e OCP_RELEASE='4.2.4' -e LOCAL_REGISTRY='my-registry.local:5000' -e 
 
 If your registry does not have an official ssl certificate, you have to mount the CA cert into the container:
 ```
-podman run --rm -v /tmp/myca.crt:/etc/ssl/certs/localca.pem -e OCP_RELEASE='4.2.4' -e LOCAL_REGISTRY='my-registry.local:5000' -e LOCAL_REPOSITORY='ocp4/openshift4' -e PULL_SECRET='<your_json_pull_secret_here>' quay.io/dgo19/ocp-release-mirror:latest
+podman run -v /tmp/myca.crt:/etc/ssl/certs/localca.pem -e OCP_RELEASE='4.2.4' -e LOCAL_REGISTRY='my-registry.local:5000' -e LOCAL_REPOSITORY='ocp4/openshift4' -e PULL_SECRET='<your_json_pull_secret_here>' quay.io/dgo19/ocp-release-mirror:latest
 ```
 
 ## License
