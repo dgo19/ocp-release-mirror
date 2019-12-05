@@ -1,4 +1,4 @@
-FROM rhel7:latest
+FROM centos8:latest
 
 RUN yum -y install curl && \
     yum clean all
