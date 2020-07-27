@@ -1,5 +1,6 @@
 #!/bin/bash
 DEFAULT_OCP_CLIENT_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"
+DEFAULT_OCP_ARCH="x86_64"
 DEFAULT_PRODUCT_REGISTRY="quay.io"
 DEFAULT_PRODUCT_REPO="openshift-release-dev"
 DEFAULT_RELEASE_NAME="ocp-release"
@@ -13,6 +14,7 @@ function error_message() {
 	echo "   PULL_SECRET <pull secret for local and product repo>"
 	echo "optional environment variables:"
 	echo "   OCP_CLIENT_URL <defaults to ${DEFAULT_OCP_CLIENT_URL}>"
+	echo "   OCP_ARCH <defaults to ${DEFAULT_OCP_CLIENT_URL}>"
 	echo "   PRODUCT_REGISTRY <defaults to ${DEFAULT_PRODUCT_REGISTRY}>"
 	echo "   PRODUCT_REPO <defaults to ${DEFAULT_PRODUCT_REPO}>"
 	echo "   RELEASE_NAME <defaults to ${DEFAULT_RELEASE_NAME}>"
@@ -38,6 +40,10 @@ if [ -z ${OCP_CLIENT_URL} ]; then
 	OCP_CLIENT_URL=${DEFAULT_OCP_CLIENT_URL}
 fi
 
+if [ -z ${OCP_ARCH} ]; then
+	OCP_ARCH=${DEFAULT_OCP_ARCH}
+fi
+
 if [ -z ${PRODUCT_REGISTRY} ]; then
 	PRODUCT_REGISTRY=${DEFAULT_PRODUCT_REGISTRY}
 fi
@@ -54,7 +60,7 @@ echo ${PULL_SECRET} > pull_secret.json
 curl -L ${OCP_CLIENT_URL}/${OCP_RELEASE}/openshift-client-linux-${OCP_RELEASE}.tar.gz | tar xzf -
 
 ./oc adm -a pull_secret.json release mirror \
-     --from=${PRODUCT_REGISTRY}/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE} \
+     --from=${PRODUCT_REGISTRY}/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${OCP_ARCH} \
      --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
      --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}
 exit $?
